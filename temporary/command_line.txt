@@ -1,0 +1,38 @@
+import numpy as np
+
+helpmessage = 'This is the Vihuela command line.\nUse commands to assign notes to each of the four tracks.'
+helpmessage += '\n\'show\' shows the sequence of notes for each of the four tracks'
+helpmessage += '\n\'loop\' loops a sequence (input 4) of comma-delimited notes on track (input 1)'
+helpmessage += '\n   starting at (input 2) for (input 3) iterations'
+
+timesig = [4,4]
+nmeasures = 20
+
+tracks = np.zeros([timesig[0]*nmeasures,4])
+
+dowhat = 'null'
+while dowhat != 'save':
+    dowhat = input('<vihuela_daw>')
+    if dowhat == 'exit':
+        break
+    if dowhat == 'help':
+        print(helpmessage)
+        continue
+    if dowhat[:5] == 'loop ':
+        comd = dowhat.split(' ')
+        loopm = comd[4].split(',')
+        for loopn in range(int(comd[3])):
+            for k, loopmm in enumerate(loopm):
+                tracks[timesig[0]*int(comd[2])+loopn*len(loopm)+k,int(comd[1])] = int(loopmm)
+        continue
+    if dowhat == 'show':
+        print(tracks)
+        continue
+    if dowhat[:7] == 'melody ':
+        print('C')
+        continue
+    if dowhat == 'save':
+        savefile = input('What file name to save to (e.g. \'wavcomp.wav\')? ')
+        continue
+    else:
+        print('Command not recognized. Try \'help\' for instructions and \'commands\' for a list of commands')
